@@ -1,26 +1,33 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-class App extends Component {
+import {
+  DisplayText,
+  FooterHelp,
+  Heading,
+  Image,
+  Layout,
+  Link,
+} from '@shopify/polaris';
+
+import logo from './logo.svg';
+import styles from './App.module.scss';
+
+export class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Layout>
+        <div className={styles.App}>
+          <Heading element="h1">
+            <DisplayText size="extraLarge">
+              create-react-app Demo
+            </DisplayText>
+          </Heading>
+          <Image alt="logo" className={styles.Logo} source={logo} />
+          <FooterHelp>
+            Built using <Link url="https://polaris.shopify.com">Polaris</Link>.
+          </FooterHelp>
+        </div>
+      </Layout>
     );
   }
 }
