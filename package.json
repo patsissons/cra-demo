@@ -12,23 +12,52 @@
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-scripts": "2.1.5",
-    "typescript": "3.3.3333"
+    "typescript": "~3.2.0"
   },
   "devDependencies": {
+    "eslint-plugin-shopify": "^26.0.0",
+    "eslint-stats": "^1.0.0",
     "husky": "^1.0.0",
     "prettier": "^1.0.0",
     "pretty-quick": "^1.0.0"
+  },
+  "resolutions": {
+    "typescript-eslint-parser": "22.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "lint": "yarn lint:ts",
+    "lint:stats": "yarn lint:ts --format node_modules/eslint-stats/byError.js",
+    "lint:ts": "eslint . --ext .ts --ext .tsx --max-warnings 0 --format codeframe",
     "pretty": "prettier --write '**/*.{css,scss,js,json,md,ts,tsx,yml}'"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "plugin:shopify/react",
+      "plugin:shopify/typescript",
+      "plugin:shopify/jest",
+      "plugin:shopify/prettier"
+    ],
+    "settings": {
+      "react": {
+        "version": "16.8"
+      }
+    },
+    "rules": {
+      "import/no-anonymous-default-export": "off",
+      "import/no-named-as-default": "off",
+      "no-empty-pattern": "off",
+      "shopify/images-no-direct-imports": "off"
+    },
+    "overrides": []
   },
+  "eslintIgnore": [
+    "/.cache",
+    "/build"
+  ],
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"
