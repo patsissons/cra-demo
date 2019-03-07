@@ -15,6 +15,10 @@
     "typescript": "~3.2.0"
   },
   "devDependencies": {
+    "@types/enzyme": "^3.0.0",
+    "@types/enzyme-adapter-react-16": "^1.0.0",
+    "enzyme": "^3.0.0",
+    "enzyme-adapter-react-16": "^1.0.0",
     "eslint-plugin-shopify": "^26.0.0",
     "eslint-stats": "^1.0.0",
     "husky": "^1.0.0",
