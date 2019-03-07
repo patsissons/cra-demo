@@ -4,12 +4,14 @@ import ReactDOM from 'react-dom';
 import {AppProvider} from '@shopify/polaris';
 import '@shopify/polaris/styles.css';
 
-import App, {theme} from './App';
+import App, {I18nManager, theme} from './App';
 import {serviceWorker} from './server';
 
 ReactDOM.render(
   <AppProvider theme={theme}>
-    <App />
+    <I18nManager>
+      <App />
+    </I18nManager>
   </AppProvider>,
   document.getElementById('root'),
 );
