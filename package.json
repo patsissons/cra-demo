@@ -2,29 +2,90 @@
   "name": "cra-demo",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://patsissons.github.io/cra-demo",
   "dependencies": {
-    "@types/jest": "24.0.9",
-    "@types/node": "11.10.4",
-    "@types/react": "16.8.6",
-    "@types/react-dom": "16.8.2",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
-    "react-scripts": "2.1.5",
-    "typescript": "3.3.3333"
+    "@shopify/polaris": "^3.0.0",
+    "@shopify/react-i18n": "^0.11.0",
+    "@types/jest": "^24.0.0",
+    "@types/node": "^11.0.0",
+    "@types/react": "~16.8.0",
+    "@types/react-dom": "~16.8.0",
+    "@types/recompose": "^0.30.0",
+    "node-sass": "^4.0.0",
+    "react": "~16.8.0",
+    "react-dom": "~16.8.0",
+    "react-scripts": "^2.0.0",
+    "recompose": "^0.30.0",
+    "typescript": "~3.2.0"
+  },
+  "devDependencies": {
+    "@types/enzyme": "^3.0.0",
+    "@types/enzyme-adapter-react-16": "^1.0.0",
+    "coveralls": "^3.0.0",
+    "del-cli": "^1.0.0",
+    "enzyme": "^3.0.0",
+    "enzyme-adapter-react-16": "^1.0.0",
+    "eslint-plugin-shopify": "^26.0.0",
+    "eslint-stats": "^1.0.0",
+    "husky": "^1.0.0",
+    "ncp": "^2.0.0",
+    "prettier": "^1.0.0",
+    "pretty-quick": "^1.0.0",
+    "serve": "^10.0.0"
+  },
+  "resolutions": {
+    "typescript-eslint-parser": "22.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "PUBLIC_URL=/ yarn build && serve -s build",
+    "docs": "yarn docs:clean && yarn build && ncp build docs",
+    "docs:clean": "del docs",
+    "lint": "yarn lint:ts",
+    "lint:stats": "yarn lint:ts --format node_modules/eslint-stats/byError.js",
+    "lint:ts": "eslint . --ext .ts --ext .tsx --max-warnings 0 --format codeframe",
+    "pretty": "prettier --write '**/*.{css,scss,js,json,md,ts,tsx,yml}'"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "plugin:shopify/react",
+      "plugin:shopify/typescript",
+      "plugin:shopify/jest",
+      "plugin:shopify/prettier"
+    ],
+    "settings": {
+      "react": {
+        "version": "16.8"
+      }
+    },
+    "rules": {
+      "import/no-anonymous-default-export": "off",
+      "import/no-named-as-default": "off",
+      "no-empty-pattern": "off",
+      "shopify/images-no-direct-imports": "off"
+    },
+    "overrides": []
+  },
+  "eslintIgnore": [
+    "/.cache",
+    "/build",
+    "/docs"
+  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   },
   "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
+    "last 3 chrome versions",
+    "last 3 chromeandroid versions",
+    "last 3 firefox versions",
+    "last 3 opera versions",
+    "last 2 edge versions",
+    "safari >= 10",
+    "ios >= 9"
   ]
 }

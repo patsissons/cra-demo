@@ -1,0 +1,7 @@
+{
+  "App": {
+    "header": "create-react-app Demo",
+    "footer": "Built using {polarisLink}",
+    "polarisLink": "Polaris"
+  }
+}
