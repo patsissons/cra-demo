@@ -1,4 +1,4 @@
-import { Theme } from "@shopify/polaris/types/components/ThemeProvider";
+import {Theme} from '@shopify/polaris/types/components/ThemeProvider';
 
 import logo from './logo.svg';
 

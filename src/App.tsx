@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import {
   DisplayText,
@@ -18,9 +18,7 @@ export class App extends Component {
       <Layout>
         <div className={styles.App}>
           <Heading element="h1">
-            <DisplayText size="extraLarge">
-              create-react-app Demo
-            </DisplayText>
+            <DisplayText size="extraLarge">create-react-app Demo</DisplayText>
           </Heading>
           <Image alt="logo" className={styles.Logo} source={logo} />
           <FooterHelp>
