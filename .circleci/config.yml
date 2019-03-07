@@ -1,0 +1,60 @@
+version: 2.1
+
+commands:
+  build:
+    steps:
+      - run:
+          name: Versions
+          command: |
+            node --version
+            npm --version
+            yarn --version
+            npm version
+
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v{{ .Environment.CIRCLE_CACHE_VERSION }}-{{ arch }}-npm-cache-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}
+            # fallback to using the latest cache if no exact match is found
+            - v{{ .Environment.CIRCLE_CACHE_VERSION }}-{{ arch }}-npm-cache-master-{{ .Environment.CIRCLE_JOB }}
+
+      - run:
+          name: Install Dependencies
+          command: yarn
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      # run tests
+      - run:
+          name: Run Tests and Collect Coverage
+          command: yarn test --coverage --coverageReporters lcov --runInBand
+          env:
+            NODE_ENV: production
+
+      # # upload coverage
+      # - run:
+      #     name: Upload Coverage
+      #     command: yarn coveralls < coverage/lcov.info
+
+jobs:
+  node-lts:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - build
+  node-11:
+    docker:
+      - image: circleci/node:11.10
+    steps:
+      - build
+
+workflows:
+  node-multi-build:
+    jobs:
+      - node-lts
+      - node-11

@@ -1,6 +1,10 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# create-react-app Demo
 
-## Available Scripts
+[![TravisCI](https://img.shields.io/travis/patsissons/cra-demo/master.svg?label=TravisCI)](https://travis-ci.org/patsissons/cra-demo) [![CircleCI](https://img.shields.io/circleci/project/github/patsissons/cra-demo/master.svg?label=CircleCI)](https://circleci.com/gh/patsissons/cra-demo) [![Coverage Status](https://img.shields.io/coveralls/github/patsissons/cra-demo/master.svg)](https://coveralls.io/github/patsissons/cra-demo) [![Github License](https://img.shields.io/github/license/patsissons/cra-demo.svg)](https://github.com/patsissons/cra-demo/blob/master/LICENSE.md) [![eslint](https://img.shields.io/badge/eslint-Shopify-117D6B.svg)](https://github.com/Shopify/eslint-plugin-shopify) [![jest](https://jestjs.io/img/jest-badge.svg)](https://github.com/facebook/jest)
+
+## create-react-app Scripts
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 In the project directory, you can run:
 
