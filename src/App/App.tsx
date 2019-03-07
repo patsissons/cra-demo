@@ -9,7 +9,7 @@ import {
   Link,
 } from '@shopify/polaris';
 
-import logo from './logo.svg';
+import {logo} from './images';
 import styles from './App.module.scss';
 
 export function App() {

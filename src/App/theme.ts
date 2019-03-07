@@ -1,6 +1,6 @@
 import {Theme} from '@shopify/polaris/types/components/ThemeProvider';
 
-import logo from './logo.svg';
+import {logo} from './images';
 
 const theme: Theme = {
   logo: {
