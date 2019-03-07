@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "coenraads.bracket-pair-colorizer-2",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "robertohuertasm.vscode-icons",
+    "shinnn.stylelint"
+  ]
+}
