@@ -14,14 +14,25 @@
     "react-scripts": "2.1.5",
     "typescript": "3.3.3333"
   },
+  "devDependencies": {
+    "husky": "^1.0.0",
+    "prettier": "^1.0.0",
+    "pretty-quick": "^1.0.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "pretty": "prettier --write '**/*.{css,scss,js,json,md,ts,tsx,yml}'"
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   },
   "browserslist": [
     "last 3 chrome versions",
