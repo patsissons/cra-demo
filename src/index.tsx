@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ReactDOM from 'react-dom';
-import {AppProvider} from '@shopify/polaris';
+import {AppProvider, Frame} from '@shopify/polaris';
 import '@shopify/polaris/styles.scss';
 
 import App, {I18nManager, theme} from './App';
@@ -10,7 +10,9 @@ import {serviceWorker} from './server';
 ReactDOM.render(
   <AppProvider theme={theme}>
     <I18nManager>
-      <App />
+      <Frame>
+        <App />
+      </Frame>
     </I18nManager>
   </AppProvider>,
   document.getElementById('root'),
