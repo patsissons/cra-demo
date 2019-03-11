@@ -1,5 +1,6 @@
 {
   "App": {
+    "create": "Create new item",
     "footer": "Built using {polarisLink}",
     "polarisLink": "Polaris",
     "title": "Todo List"

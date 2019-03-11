@@ -12,6 +12,7 @@ import {
 import {withI18n, WithI18nProps} from '@shopify/react-i18n';
 import {compose} from 'recompose';
 
+import {TodoList} from './components';
 import {withTodoListData, WithTodoListDataProps} from './withTodoListData';
 import en from './translations/en.json';
 
@@ -19,7 +20,7 @@ export interface Props {}
 
 type ComposedProps = Props & WithI18nProps & WithTodoListDataProps;
 
-export function App({i18n, items}: ComposedProps) {
+export function App({i18n, items, create, remove, update}: ComposedProps) {
   if (!items) {
     return (
       <SkeletonPage primaryAction title={i18n.translate('App.title')}>
@@ -32,7 +33,13 @@ export function App({i18n, items}: ComposedProps) {
   }
 
   return (
-    <Page title={i18n.translate('App.title')}>
+    <Page
+      title={i18n.translate('App.title')}
+      primaryAction={{content: i18n.translate('App.create'), onAction: create}}
+    >
+      <Card>
+        <TodoList items={items} remove={remove} update={update} />
+      </Card>
       <FooterHelp>
         {i18n.translate('App.footer', {
           polarisLink: (
