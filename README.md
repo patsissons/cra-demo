@@ -22,6 +22,15 @@ Run the linter (also `yarn lint:stats` to narrow down rule violations)
 
 Run the formatter
 
+### `yarn build:stats`
+
+Webpack bundles can be profiled to validate optimized bundling, minimizing size, and deduplication of modules. Profiled bundles produce a `build/bundle-stats.json` file that the following tools can be used for visualizing the bundler stats:
+
+- https://webpack.github.io/analyse/
+- https://chrisbateman.github.io/webpack-visualizer/
+- https://alexkuz.github.io/webpack-chart/
+- https://alexkuz.github.io/stellar-webpack/
+
 ## create-react-app Scripts
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

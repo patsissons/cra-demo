@@ -16,7 +16,7 @@
     "react-dom": "~16.8.0",
     "react-scripts": "^2.0.0",
     "recompose": "^0.30.0",
-    "typescript": "~3.2.0"
+    "typescript": "~3.1.0"
   },
   "devDependencies": {
     "@types/enzyme": "^3.0.0",
@@ -41,6 +41,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "build:stats": "yarn build --stats --profile",
     "server": "PUBLIC_URL=/ yarn build && serve -s build",
     "docs": "yarn docs:clean && yarn build && ncp build docs",
     "docs:clean": "del docs",
