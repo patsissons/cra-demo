@@ -41,6 +41,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "build:stats": "yarn build --stats --profile",
     "server": "PUBLIC_URL=/ yarn build && serve -s build",
     "docs": "yarn docs:clean && yarn build && ncp build docs",
     "docs:clean": "del docs",
