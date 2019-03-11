@@ -1,0 +1,13 @@
+@import '@shopify/polaris/styles/foundation.scss';
+
+.Icon {
+  display: block;
+}
+
+.CompletedItem {
+  background-color: color('sky');
+}
+
+.CompletedText {
+  text-decoration: line-through;
+}

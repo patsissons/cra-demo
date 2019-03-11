@@ -3,5 +3,18 @@
     "footer": "Built using {polarisLink}",
     "polarisLink": "Polaris",
     "title": "Todo List"
+  },
+  "TodoListItem": {
+    "accessibilityLabel": "List item",
+    "error": "Error saving item",
+    "placeholder": "Enter todo notes",
+    "save": "Save",
+    "tooltip": {
+      "cancel": "Cancel editing this todo item",
+      "complete": "Click this item to mark it incomplete",
+      "delete": "Delete this todo item",
+      "edit": "Edit this todo item",
+      "incomplete": "Click this item to mark it complete"
+    }
   }
 }
