@@ -4,6 +4,12 @@
     "polarisLink": "Polaris",
     "title": "Todo List"
   },
+  "TodoList": {
+    "resourceNames": {
+      "plural": "items",
+      "singular": "item"
+    }
+  },
   "TodoListItem": {
     "accessibilityLabel": "List item",
     "error": "Error saving item",
