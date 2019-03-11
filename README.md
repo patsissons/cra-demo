@@ -10,7 +10,7 @@ Demo deployed to [Github Pages](https://patsissons.github.io/cra-demo/)
 
 Run this after `yarn build` to test a production build before deploy
 
-### `yarn deploy`
+### `yarn docs`
 
 build and deploy to `docs`
 

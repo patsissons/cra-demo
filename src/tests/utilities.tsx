@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {AppProvider} from '@shopify/polaris';
+import {AppProvider, Frame} from '@shopify/polaris';
 import {I18n, withI18n, WithI18nProps} from '@shopify/react-i18n';
 import {mount, ReactWrapper} from 'enzyme';
 
@@ -17,7 +17,9 @@ function TestWrapper({element}: any) {
   return (
     <AppProvider>
       <I18nManager>
-        <Translations>{element}</Translations>
+        <Frame>
+          <Translations>{element}</Translations>
+        </Frame>
       </I18nManager>
     </AppProvider>
   );
