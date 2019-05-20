@@ -4,8 +4,9 @@ import ReactDOM from 'react-dom';
 import {AppProvider, Frame} from '@shopify/polaris';
 import '@shopify/polaris/styles.scss';
 
-import App, {I18nManager, theme} from './App';
+import App, {I18nManager} from './App';
 import {serviceWorker} from './server';
+import {theme} from './style';
 
 ReactDOM.render(
   <AppProvider theme={theme}>
