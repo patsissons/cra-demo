@@ -4,9 +4,9 @@ import {AppProvider, Frame} from '@shopify/polaris';
 import {I18n, withI18n, WithI18nProps} from '@shopify/react-i18n';
 import {mount, ReactWrapper} from 'enzyme';
 
+import {I18nProvider} from 'utilities';
 // eslint-disable-next-line
 import en from '../App/translations/en.json';
-import {I18nManager} from '../App';
 
 const Translations = withI18n({
   id: 'Test',
@@ -16,11 +16,11 @@ const Translations = withI18n({
 function TestWrapper({element}: any) {
   return (
     <AppProvider>
-      <I18nManager>
+      <I18nProvider>
         <Frame>
           <Translations>{element}</Translations>
         </Frame>
-      </I18nManager>
+      </I18nProvider>
     </AppProvider>
   );
 }

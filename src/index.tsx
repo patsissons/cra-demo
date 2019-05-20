@@ -4,17 +4,18 @@ import ReactDOM from 'react-dom';
 import {AppProvider, Frame} from '@shopify/polaris';
 import '@shopify/polaris/styles.scss';
 
-import App, {I18nManager} from './App';
+import App from './App';
 import {serviceWorker} from './server';
 import {theme} from './style';
+import {I18nProvider} from './utilities';
 
 ReactDOM.render(
   <AppProvider theme={theme}>
-    <I18nManager>
+    <I18nProvider>
       <Frame>
         <App />
       </Frame>
-    </I18nManager>
+    </I18nProvider>
   </AppProvider>,
   document.getElementById('root'),
 );
