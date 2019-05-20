@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import {TodoItem} from 'src/models';
-import {TodoItemDataSourceType, TodoListService} from 'src/services';
-import {TodoItemCreateInput} from 'src/services/TodoItemService/DataSources';
+import {TodoItem} from 'models';
+import {TodoItemDataSourceType, TodoListService} from 'services';
+import {TodoItemCreateInput} from 'services/TodoItemService/DataSources';
 
 export interface WithTodoListDataProps {
   items?: TodoItem[];

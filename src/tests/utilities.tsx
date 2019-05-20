@@ -4,23 +4,23 @@ import {AppProvider, Frame} from '@shopify/polaris';
 import {I18n, withI18n, WithI18nProps} from '@shopify/react-i18n';
 import {mount, ReactWrapper} from 'enzyme';
 
-// eslint-disable-next-line
-import en from '../App/translations/en.json';
-import {I18nManager} from '../App';
+// eslint-disable-next-line shopify/strict-component-boundaries
+import {fallbackTranslations} from 'components/App/translations';
+import {I18nProvider} from 'utilities';
 
 const Translations = withI18n({
   id: 'Test',
-  fallback: en,
+  fallback: fallbackTranslations,
 })(({children}: any) => children);
 
 function TestWrapper({element}: any) {
   return (
     <AppProvider>
-      <I18nManager>
+      <I18nProvider>
         <Frame>
           <Translations>{element}</Translations>
         </Frame>
-      </I18nManager>
+      </I18nProvider>
     </AppProvider>
   );
 }

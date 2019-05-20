@@ -4,7 +4,7 @@ import {ResourceList} from '@shopify/polaris';
 import {withI18n, WithI18nProps} from '@shopify/react-i18n';
 import {compose} from 'recompose';
 
-import {TodoItem} from 'src/models';
+import {TodoItem} from 'models';
 import {TodoListItem} from './components';
 
 export interface Props {

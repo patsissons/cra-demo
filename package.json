@@ -1,7 +1,16 @@
 {
   "name": "cra-demo",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.1",
+  "license": "MIT",
+  "description": "A best practices React demo using create-react-app, TypeScript, polaris, and some Shopify tools",
+  "author": "Pat Sissons <patricksissons@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patsissons/cra-demo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/patsissons/cra-demo/issues"
+  },
   "homepage": "https://patsissons.github.io/cra-demo",
   "dependencies": {
     "@shopify/polaris": "^3.0.0",
@@ -14,7 +23,7 @@
     "node-sass": "^4.0.0",
     "react": "~16.8.0",
     "react-dom": "~16.8.0",
-    "react-scripts": "^2.0.0",
+    "react-scripts": "^3.0.0",
     "recompose": "^0.30.0",
     "typescript": "~3.1.0"
   },
@@ -25,16 +34,13 @@
     "del-cli": "^1.0.0",
     "enzyme": "^3.0.0",
     "enzyme-adapter-react-16": "^1.0.0",
-    "eslint-plugin-shopify": "^26.0.0",
+    "eslint-plugin-shopify": "^28.0.0",
     "eslint-stats": "^1.0.0",
-    "husky": "^1.0.0",
+    "husky": "^2.0.0",
     "ncp": "^2.0.0",
     "prettier": "^1.0.0",
     "pretty-quick": "^1.0.0",
-    "serve": "^10.0.0"
-  },
-  "resolutions": {
-    "typescript-eslint-parser": "22.0.0"
+    "serve": "^11.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -63,8 +69,10 @@
       }
     },
     "rules": {
+      "eslint-comments/no-unlimited-disable": "off",
       "import/no-anonymous-default-export": "off",
       "import/no-named-as-default": "off",
+      "import/no-unused-modules": "off",
       "no-empty-pattern": "off",
       "shopify/images-no-direct-imports": "off"
     },

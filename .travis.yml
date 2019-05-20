@@ -10,6 +10,7 @@ notifications:
   email: false
 
 script:
+  - NODE_ENV=$BUILD_ENV yarn lint
   - NODE_ENV=$BUILD_ENV yarn test --coverage --coverageReporters lcov --runInBand
 
 after_success:

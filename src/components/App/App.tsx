@@ -13,8 +13,8 @@ import {withI18n, WithI18nProps} from '@shopify/react-i18n';
 import {compose} from 'recompose';
 
 import {TodoList} from './components';
+import {fallbackTranslations} from './translations';
 import {withTodoListData, WithTodoListDataProps} from './withTodoListData';
-import en from './translations/en.json';
 
 export interface Props {}
 
@@ -57,9 +57,11 @@ export default compose<ComposedProps, {}>(
   withTodoListData(),
   withI18n({
     id: 'App',
-    fallback: en,
+    fallback: fallbackTranslations,
     async translations(locale) {
-      const dictionary = await import(/* webpackChunkName: "App_<hash>-i18n" */ `./translations/${locale}.json`);
+      const dictionary = await import(
+        /* webpackChunkName: "App_<hash>-i18n" */ `./translations/${locale}.json`
+      );
       return dictionary;
     },
   }),

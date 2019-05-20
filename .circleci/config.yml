@@ -29,6 +29,13 @@ commands:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
+      # lint source
+      - run:
+          name: Lint source code
+          command: yarn lint
+          env:
+            NODE_ENV: production
+
       # run tests
       - run:
           name: Run Tests and Collect Coverage

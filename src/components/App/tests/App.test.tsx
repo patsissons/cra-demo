@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import {FooterHelp, Page} from '@shopify/polaris';
 
-import {mountWithContext} from 'src/tests/utilities';
+import {mountWithContext} from 'tests/utilities';
 
 import App from '../App';
 import {TodoList} from '../components';
