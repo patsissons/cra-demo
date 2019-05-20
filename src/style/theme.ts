@@ -1,10 +1,6 @@
 import {Theme} from '@shopify/polaris/types/components/ThemeProvider';
-import {logo} from 'images';
 
-const theme: Theme = {
-  logo: {
-    url: logo,
-  },
-};
+/* istanbul ignore next */
+const theme: Theme = {};
 
 export default theme;

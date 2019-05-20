@@ -1,5 +1,4 @@
-import * as React from 'react';
-
+import React, {useCallback, useMemo, useState} from 'react';
 import {
   Card,
   FooterHelp,
@@ -8,20 +7,39 @@ import {
   Page,
   SkeletonPage,
   SkeletonBodyText,
+  Toast,
 } from '@shopify/polaris';
-import {withI18n, WithI18nProps} from '@shopify/react-i18n';
-import {compose} from 'recompose';
-
+import {useI18n} from '@shopify/react-i18n';
+import {isDevelopment} from 'utilities';
 import {TodoList} from './components';
+import {useTodoListService} from './hooks';
 import {fallbackTranslations} from './translations';
-import {withTodoListData, WithTodoListDataProps} from './withTodoListData';
 
-export interface Props {}
+export default function App() {
+  const [i18n, ShareTranslations] = useI18n({
+    id: 'App_<hash>',
+    fallback: fallbackTranslations,
+    async translations(locale) {
+      const dictionary = await import(
+        /* webpackChunkName: "App_<hash>-i18n", webpackMode: "lazy-once" */ `./translations/${locale}.json`
+      );
+      return dictionary;
+    },
+  });
+  const [creating, setCreating] = useState(false);
+  const [error, setError] = useState(false);
+  const options = useMemo(
+    () =>
+      /* istanbul ignore next */
+      isDevelopment ? {params: {simulatedLatency: 1000}} : undefined,
+    [],
+  );
+  const {items, loading, create, remove, update} = useTodoListService(options);
+  const handleDismissToast = useCallback(() => {
+    setError(false);
+  }, [setError]);
 
-type ComposedProps = Props & WithI18nProps & WithTodoListDataProps;
-
-export function App({i18n, items, create, remove, update}: ComposedProps) {
-  if (!items) {
+  if (loading) {
     return (
       <SkeletonPage primaryAction title={i18n.translate('App.title')}>
         <Card sectioned>
@@ -33,36 +51,45 @@ export function App({i18n, items, create, remove, update}: ComposedProps) {
   }
 
   return (
-    <Page
-      title={i18n.translate('App.title')}
-      primaryAction={{content: i18n.translate('App.create'), onAction: create}}
-    >
-      <Card>
-        <TodoList items={items} remove={remove} update={update} />
-      </Card>
-      <FooterHelp>
-        {i18n.translate('App.footer', {
-          polarisLink: (
-            <Link url="https://polaris.shopify.com">
-              {i18n.translate('App.polarisLink')}
-            </Link>
-          ),
-        })}
-      </FooterHelp>
-    </Page>
+    <ShareTranslations>
+      <Page
+        title={i18n.translate('App.title')}
+        primaryAction={{
+          content: i18n.translate('App.create'),
+          loading: creating,
+          async onAction() {
+            setCreating(true);
+
+            try {
+              await create();
+            } catch {
+              setError(true);
+            }
+
+            setCreating(false);
+          },
+        }}
+      >
+        <Card>
+          <TodoList items={items} remove={remove} update={update} />
+        </Card>
+        <FooterHelp>
+          {i18n.translate('App.footer', {
+            polarisLink: (
+              <Link url="https://polaris.shopify.com">
+                {i18n.translate('App.polarisLink')}
+              </Link>
+            ),
+          })}
+        </FooterHelp>
+      </Page>
+      {error && (
+        <Toast
+          content={i18n.translate(`App.error`)}
+          onDismiss={handleDismissToast}
+          error
+        />
+      )}
+    </ShareTranslations>
   );
 }
-
-export default compose<ComposedProps, {}>(
-  withTodoListData(),
-  withI18n({
-    id: 'App',
-    fallback: fallbackTranslations,
-    async translations(locale) {
-      const dictionary = await import(
-        /* webpackChunkName: "App_<hash>-i18n" */ `./translations/${locale}.json`
-      );
-      return dictionary;
-    },
-  }),
-)(App);
