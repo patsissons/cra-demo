@@ -1,4 +1,4 @@
-import {TodoItem} from 'src/models';
+import {TodoItem} from 'models';
 import {TodoItemCreateInput, TodoItemDataSource} from './TodoItemDataSource';
 
 export class EphemeralDataSource implements TodoItemDataSource {
