@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import {AppProvider, Frame} from '@shopify/polaris';
 import '@shopify/polaris/styles.scss';
 
-import App from './App';
+import {App} from './components';
 import {serviceWorker} from './server';
 import {theme} from './style';
 import {I18nProvider} from './utilities';
