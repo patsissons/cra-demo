@@ -56,7 +56,12 @@ jobs:
       - build
   node-11:
     docker:
-      - image: circleci/node:11.10
+      - image: circleci/node:11
+    steps:
+      - build
+  node-12:
+    docker:
+      - image: circleci/node:12
     steps:
       - build
 
@@ -65,3 +70,4 @@ workflows:
     jobs:
       - node-lts
       - node-11
+      - node-12
