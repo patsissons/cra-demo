@@ -1,9 +1,8 @@
 import React from 'react';
 import {
-  asapPromise,
   HookPropsContainer,
   HookWrapper,
-  mountWithContextAsync,
+  mountWithContext,
   noopPromise,
 } from 'tests/utilities';
 import {
@@ -27,13 +26,15 @@ const EphemeralDataSourceMock: jest.Mock = require.requireMock(
 ).EphemeralDataSource;
 
 function mockEphemeralDataSource() {
+  const fetchPromise = Promise.resolve([]);
   return {
     create() {
       return Promise.resolve([]);
     },
     fetch() {
-      return Promise.resolve([]);
+      return fetchPromise;
     },
+    fetchPromise,
     remove() {
       return Promise.resolve([]);
     },
@@ -46,17 +47,24 @@ function mockEphemeralDataSource() {
 describe('useTodoListService()', () => {
   beforeEach(() => {
     EphemeralDataSourceMock.mockReset();
-    EphemeralDataSourceMock.mockImplementation(mockEphemeralDataSource);
   });
 
   it('defaults to Type.Ephemeral', async () => {
-    await mountWithContextAsync(<HookWrapper hook={useTodoListService} />);
+    const {fetchPromise, ...mock} = mockEphemeralDataSource();
+    EphemeralDataSourceMock.mockImplementation(() => mock);
+    const wrapper = await mountWithContext(
+      <HookWrapper hook={useTodoListService} />,
+    );
+
+    await wrapper.act(() => fetchPromise);
 
     expect(EphemeralDataSourceMock).toHaveBeenCalledTimes(1);
   });
 
   it('is initialized with loading set to true and an empty items array', async () => {
-    const wrapper = await mountWithContextAsync(
+    const {fetchPromise, ...mock} = mockEphemeralDataSource();
+    EphemeralDataSourceMock.mockImplementation(() => mock);
+    const wrapper = await mountWithContext(
       <HookWrapper hook={useTodoListService} />,
     );
 
@@ -64,33 +72,39 @@ describe('useTodoListService()', () => {
       loading: true,
       items: [],
     });
+
+    await wrapper.act(() => fetchPromise);
   });
 
   it('calls fetch on the data source during initialization', async () => {
-    const fetch = jest.fn(noopPromise);
+    const {fetchPromise, ...mock} = mockEphemeralDataSource();
+    const fetch = jest.fn(() => fetchPromise);
     EphemeralDataSourceMock.mockImplementation(() => ({
-      ...mockEphemeralDataSource(),
+      ...mock,
       fetch,
     }));
+    const wrapper = await mountWithContext(
+      <HookWrapper hook={useTodoListService} />,
+    );
 
-    await mountWithContextAsync(<HookWrapper hook={useTodoListService} />);
+    await wrapper.act(() => fetchPromise);
 
     expect(fetch).toHaveBeenCalledTimes(1);
   });
 
   it('updates items with the results of the initial fetch', async () => {
     const items = [{id: '1', isComplete: false, text: 'test'}];
-    const fetch = jest.fn(() => Promise.resolve(items));
+    const fetchPromise = Promise.resolve(items);
+    const fetch = jest.fn(() => fetchPromise);
     EphemeralDataSourceMock.mockImplementation(() => ({
       ...mockEphemeralDataSource(),
       fetch,
     }));
-
-    const wrapper = await mountWithContextAsync(
+    const wrapper = await mountWithContext(
       <HookWrapper hook={useTodoListService} />,
     );
 
-    await wrapper.act(asapPromise);
+    await wrapper.act(() => fetchPromise);
 
     expect(wrapper).toContainReactComponent(HookPropsContainer, {
       items,
@@ -98,11 +112,17 @@ describe('useTodoListService()', () => {
   });
 
   it('resets loading to false once the initial fetch is complete', async () => {
-    const wrapper = await mountWithContextAsync(
+    const fetchPromise = Promise.resolve([]);
+    const fetch = jest.fn(() => fetchPromise);
+    EphemeralDataSourceMock.mockImplementation(() => ({
+      ...mockEphemeralDataSource(),
+      fetch,
+    }));
+    const wrapper = await mountWithContext(
       <HookWrapper hook={useTodoListService} />,
     );
 
-    await wrapper.act(asapPromise);
+    await wrapper.act(() => fetchPromise);
 
     expect(wrapper).toContainReactComponent(HookPropsContainer, {
       loading: false,
@@ -111,15 +131,17 @@ describe('useTodoListService()', () => {
 
   it('calls create on the data source with provided args when create is invoked', async () => {
     const args = {text: 'testing'};
+    const {fetchPromise, ...mock} = mockEphemeralDataSource();
     const create = jest.fn(noopPromise);
     EphemeralDataSourceMock.mockImplementation(() => ({
-      ...mockEphemeralDataSource(),
+      ...mock,
       create,
     }));
-
-    const wrapper = await mountWithContextAsync(
+    const wrapper = await mountWithContext(
       <HookWrapper hook={useTodoListService} />,
     );
+
+    await wrapper.act(() => fetchPromise);
     await wrapper.find(HookPropsContainer)!.trigger('create', args);
 
     expect(create).toHaveBeenCalledTimes(1);
@@ -128,15 +150,17 @@ describe('useTodoListService()', () => {
 
   it('calls remove on the data source with the provided item when remove is invoked', async () => {
     const item = {id: '1', isComplete: false, text: 'testing'};
+    const {fetchPromise, ...mock} = mockEphemeralDataSource();
     const remove = jest.fn(noopPromise);
     EphemeralDataSourceMock.mockImplementation(() => ({
-      ...mockEphemeralDataSource(),
+      ...mock,
       remove,
     }));
-
-    const wrapper = await mountWithContextAsync(
+    const wrapper = await mountWithContext(
       <HookWrapper hook={useTodoListService} />,
     );
+
+    await wrapper.act(() => fetchPromise);
     await wrapper.find(HookPropsContainer)!.trigger('remove', item);
 
     expect(remove).toHaveBeenCalledTimes(1);
@@ -145,15 +169,17 @@ describe('useTodoListService()', () => {
 
   it('calls update on the data source with the provided item when update is invoked', async () => {
     const item = {id: '1', isComplete: false, text: 'testing'};
+    const {fetchPromise, ...mock} = mockEphemeralDataSource();
     const update = jest.fn(noopPromise);
     EphemeralDataSourceMock.mockImplementation(() => ({
-      ...mockEphemeralDataSource(),
+      ...mock,
       update,
     }));
-
-    const wrapper = await mountWithContextAsync(
+    const wrapper = await mountWithContext(
       <HookWrapper hook={useTodoListService} />,
     );
+
+    await wrapper.act(() => fetchPromise);
     await wrapper.find(HookPropsContainer)!.trigger('update', item);
 
     expect(update).toHaveBeenCalledTimes(1);
