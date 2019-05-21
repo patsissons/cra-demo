@@ -1,17 +1,22 @@
 language: node_js
-node_js:
-  - '11.10'
-  - 'lts/*'
+
+matrix:
+  include:
+    - node_js: '11'
+    - node_js: 'lts/*'
+      env: UPLOAD_COVERALLS=yes
 
 env:
-  - BUILD_ENV=production
+  global:
+    - BUILD_ENV=production
 
 notifications:
   email: false
 
 script:
+  - env
   - NODE_ENV=$BUILD_ENV yarn lint
   - NODE_ENV=$BUILD_ENV yarn test --coverage --coverageReporters lcov --runInBand
 
 after_success:
-  - yarn coveralls < coverage/lcov.info
+  - test $UPLOAD_COVERALLS = 'yes' && test $TRAVIS_EVENT_TYPE = 'push' && test $TRAVIS_BRANCH = 'master' && yarn coveralls < coverage/lcov.info
