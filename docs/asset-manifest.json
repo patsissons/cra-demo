@@ -1,19 +1,17 @@
 {
-  "main.css": "/cra-demo/static/css/main.18baf296.chunk.css",
-  "main.js": "/cra-demo/static/js/main.c28c3de9.chunk.js",
-  "main.js.map": "/cra-demo/static/js/main.c28c3de9.chunk.js.map",
-  "runtime~main.js": "/cra-demo/static/js/runtime~main.65c5ac18.js",
-  "runtime~main.js.map": "/cra-demo/static/js/runtime~main.65c5ac18.js.map",
-  "static/css/2.d9c195d8.chunk.css": "/cra-demo/static/css/2.d9c195d8.chunk.css",
-  "static/js/2.fb87a590.chunk.js": "/cra-demo/static/js/2.fb87a590.chunk.js",
-  "static/js/2.fb87a590.chunk.js.map": "/cra-demo/static/js/2.fb87a590.chunk.js.map",
-  "index.html": "/cra-demo/index.html",
-  "precache-manifest.279dc472d054ba92648c79937a9c0921.js": "/cra-demo/precache-manifest.279dc472d054ba92648c79937a9c0921.js",
-  "service-worker.js": "/cra-demo/service-worker.js",
-  "static/css/2.d9c195d8.chunk.css.map": "/cra-demo/static/css/2.d9c195d8.chunk.css.map",
-  "static/css/main.18baf296.chunk.css.map": "/cra-demo/static/css/main.18baf296.chunk.css.map",
-  "static/media/complete.c1770ff5.svg": "/cra-demo/static/media/complete.c1770ff5.svg",
-  "static/media/edit.ea47800b.svg": "/cra-demo/static/media/edit.ea47800b.svg",
-  "static/media/incomplete.89b8bf4d.svg": "/cra-demo/static/media/incomplete.89b8bf4d.svg",
-  "static/media/logo.svg": "/cra-demo/static/media/logo.5d5d9eef.svg"
+  "files": {
+    "main.css": "/cra-demo/static/css/main.6b8a1148.chunk.css",
+    "main.js": "/cra-demo/static/js/main.f95a9e02.chunk.js",
+    "main.js.map": "/cra-demo/static/js/main.f95a9e02.chunk.js.map",
+    "runtime~main.js": "/cra-demo/static/js/runtime~main.52efd976.js",
+    "runtime~main.js.map": "/cra-demo/static/js/runtime~main.52efd976.js.map",
+    "static/css/2.525f0ac4.chunk.css": "/cra-demo/static/css/2.525f0ac4.chunk.css",
+    "static/js/2.fc5429bd.chunk.js": "/cra-demo/static/js/2.fc5429bd.chunk.js",
+    "static/js/2.fc5429bd.chunk.js.map": "/cra-demo/static/js/2.fc5429bd.chunk.js.map",
+    "index.html": "/cra-demo/index.html",
+    "precache-manifest.ff961f8260c7fbf45ff48abe005f987c.js": "/cra-demo/precache-manifest.ff961f8260c7fbf45ff48abe005f987c.js",
+    "service-worker.js": "/cra-demo/service-worker.js",
+    "static/css/2.525f0ac4.chunk.css.map": "/cra-demo/static/css/2.525f0ac4.chunk.css.map",
+    "static/css/main.6b8a1148.chunk.css.map": "/cra-demo/static/css/main.6b8a1148.chunk.css.map"
+  }
 }
