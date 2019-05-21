@@ -10,7 +10,7 @@ import {
   Toast,
 } from '@shopify/polaris';
 import {useI18n} from '@shopify/react-i18n';
-import {isDevelopment} from 'utilities';
+import {isDevelopment, isProduction} from 'utilities';
 import {TodoList} from './components';
 import {useTodoListService} from './hooks';
 import {fallbackTranslations} from './translations';
@@ -31,7 +31,9 @@ export default function App() {
   const options = useMemo(
     () =>
       /* istanbul ignore next */
-      isDevelopment ? {params: {simulatedLatency: 1000}} : undefined,
+      isDevelopment || isProduction
+        ? {params: {simulatedLatency: 1000}}
+        : undefined,
     [],
   );
   const {items, loading, create, remove, update} = useTodoListService(options);
