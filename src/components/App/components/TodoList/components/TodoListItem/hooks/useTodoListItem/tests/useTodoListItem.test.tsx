@@ -2,7 +2,6 @@ import React from 'react';
 import {useI18n} from '@shopify/react-i18n';
 import {TodoItem} from 'models';
 import {
-  asapPromise,
   HookPropsContainer,
   HookWrapper,
   mountWithContext,
@@ -175,7 +174,8 @@ describe('useTodoListItem()', () => {
   });
 
   it('invokes updateText when submit is called', async () => {
-    const updateText = jest.fn(noopPromise);
+    const updatePromise = Promise.resolve();
+    const updateText = jest.fn(() => updatePromise);
     const mockProps = {
       ...defaultMockProps,
       updateText,
@@ -188,13 +188,14 @@ describe('useTodoListItem()', () => {
         .triggerKeypath('fields.text.onChange', 'updated');
     });
     await wrapper.find(HookPropsContainer)!.trigger('submit');
-    await asapPromise();
+    await updatePromise;
 
     expect(updateText).toHaveBeenCalledTimes(1);
   });
 
   it('disables edit mode when submit is successful', async () => {
-    const updateText = jest.fn(noopPromise);
+    const updatePromise = Promise.resolve();
+    const updateText = jest.fn(() => updatePromise);
     const mockProps = {
       ...defaultMockProps,
       updateText,
@@ -207,7 +208,7 @@ describe('useTodoListItem()', () => {
         .triggerKeypath('fields.text.onChange', 'updated');
     });
     await wrapper.find(HookPropsContainer)!.trigger('submit');
-    await asapPromise();
+    await updatePromise;
 
     expect(wrapper).toContainReactComponent(HookPropsContainer, {
       isEditing: false,
@@ -215,7 +216,8 @@ describe('useTodoListItem()', () => {
   });
 
   it('resets the text field when submit is successful', async () => {
-    const updateText = jest.fn(noopPromise);
+    const updatePromise = Promise.resolve();
+    const updateText = jest.fn(() => updatePromise);
     const mockProps = {
       ...defaultMockProps,
       updateText,
@@ -228,7 +230,7 @@ describe('useTodoListItem()', () => {
         .triggerKeypath('fields.text.onChange', 'updated');
     });
     await wrapper.find(HookPropsContainer)!.trigger('submit');
-    await asapPromise();
+    await updatePromise;
 
     expect(wrapper).toContainReactComponent(HookPropsContainer, {
       fields: {text: expect.objectContaining({value: ''})},
@@ -251,7 +253,6 @@ describe('useTodoListItem()', () => {
         .triggerKeypath('fields.text.onChange', 'updated');
     });
     await wrapper.find(HookPropsContainer)!.trigger('submit');
-    await asapPromise();
 
     expect(wrapper).toContainReactComponent(HookPropsContainer, {
       error: ErrorType.Save,

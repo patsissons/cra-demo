@@ -12,7 +12,7 @@ import {
   CircleTickMajorTwotone,
   EditMajorTwotone,
 } from '@shopify/polaris-icons';
-import {asapPromise, mountWithContext, noopPromise} from 'tests/utilities';
+import {mountWithContext, noopPromise} from 'tests/utilities';
 import {ErrorType} from '../hooks/useTodoListItem/useTodoListItem';
 import TodoListItem, {
   errorableAction,
@@ -175,7 +175,8 @@ describe('<TodoListItem />', () => {
 
   it('removes a newly created item when the Escape key is pressed in edit mode', async () => {
     const setRemoving = jest.fn();
-    const removeItem = jest.fn(noopPromise);
+    const removePromise = Promise.resolve();
+    const removeItem = jest.fn(() => removePromise);
     useTodoListItemMock.mockImplementation(() => ({
       ...mockUseTodoListItem(),
       isEditing: true,
@@ -189,7 +190,7 @@ describe('<TodoListItem />', () => {
     const wrapper = mountWithContext(<TodoListItem {...mockProps} />);
 
     await wrapper.find('div')!.trigger('onKeyDown', {key: 'Escape'});
-    await asapPromise();
+    await removePromise;
 
     expect(setRemoving).toHaveBeenCalledTimes(2);
     expect(setRemoving).toHaveBeenLastCalledWith(false);
@@ -232,7 +233,8 @@ describe('<TodoListItem />', () => {
   });
 
   it('toggles isCompleted when the <ResourceList.Item /> is clicked while not in edit mode', async () => {
-    const toggleComplete = jest.fn(noopPromise);
+    const togglePromise = Promise.resolve();
+    const toggleComplete = jest.fn(() => togglePromise);
     const setToggling = jest.fn();
     useTodoListItemMock.mockImplementation(() => ({
       ...mockUseTodoListItem(),
@@ -246,7 +248,7 @@ describe('<TodoListItem />', () => {
     const wrapper = mountWithContext(<TodoListItem {...mockProps} />);
 
     await wrapper.find(ResourceList.Item)!.trigger('onClick');
-    await asapPromise();
+    await togglePromise;
 
     expect(setToggling).toHaveBeenCalledTimes(2);
     expect(setToggling).toHaveBeenLastCalledWith(false);
@@ -268,14 +270,14 @@ describe('<TodoListItem />', () => {
     const wrapper = mountWithContext(<TodoListItem {...mockProps} />);
 
     await wrapper.find(ResourceList.Item)!.trigger('onClick');
-    await asapPromise();
 
     expect(setError).toHaveBeenCalledTimes(1);
     expect(setError).toHaveBeenLastCalledWith(ErrorType.Toggle);
   });
 
   it('ignores <ResourceList.Item /> clicks while in edit mode', async () => {
-    const toggleComplete = jest.fn(noopPromise);
+    const togglePromise = Promise.resolve();
+    const toggleComplete = jest.fn(() => togglePromise);
     const setToggling = jest.fn();
     useTodoListItemMock.mockImplementation(() => ({
       ...mockUseTodoListItem(),
@@ -289,7 +291,7 @@ describe('<TodoListItem />', () => {
     const wrapper = mountWithContext(<TodoListItem {...mockProps} />);
 
     await wrapper.find(ResourceList.Item)!.trigger('onClick');
-    await asapPromise();
+    await togglePromise;
 
     expect(setToggling).not.toHaveBeenCalled();
     expect(toggleComplete).not.toHaveBeenCalled();
@@ -488,7 +490,8 @@ describe('<TodoListItem />', () => {
   });
 
   it('invokes removeItem when the remove button is clicked', async () => {
-    const removeItem = jest.fn(noopPromise);
+    const removePromise = Promise.resolve();
+    const removeItem = jest.fn(() => removePromise);
     const setRemoving = jest.fn();
     const event = {
       preventDefault: jest.fn(),
@@ -507,7 +510,7 @@ describe('<TodoListItem />', () => {
     await wrapper
       .find(Button, {destructive: true, icon: 'delete'})!
       .trigger<any>('onClick', event);
-    await asapPromise();
+    await removePromise;
 
     expect(setRemoving).toHaveBeenCalledTimes(2);
     expect(setRemoving).toHaveBeenLastCalledWith(false);
@@ -533,7 +536,6 @@ describe('<TodoListItem />', () => {
     await wrapper
       .find(Button, {destructive: true, icon: 'delete'})!
       .trigger<any>('onClick');
-    await asapPromise();
 
     expect(setError).toHaveBeenCalledTimes(1);
     expect(setError).toHaveBeenLastCalledWith(ErrorType.Remove);
@@ -631,7 +633,7 @@ describe('errorableAction()', () => {
       ErrorType.Toggle,
       () => {},
       setInvoking,
-      asapPromise,
+      noopPromise,
     );
 
     expect(setInvoking).toHaveBeenCalledTimes(1);

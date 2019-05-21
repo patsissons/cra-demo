@@ -1,9 +1,10 @@
+/* istanbul ignore file */
+
 import React from 'react';
-import {act} from 'react-dom/test-utils';
 import {AppProvider, Frame} from '@shopify/polaris';
 import {I18n, I18nContext, TranslationDictionary} from '@shopify/react-i18n';
 import {I18nParentContext} from '@shopify/react-i18n/dist/context';
-import {createMount, CustomRoot} from '@shopify/react-testing';
+import {createMount} from '@shopify/react-testing';
 import {i18nManager} from 'utilities';
 // eslint-disable-next-line shopify/strict-component-boundaries
 import {fallbackTranslations} from 'components/App/translations';
@@ -38,25 +39,6 @@ export const mountWithContext = createMount<Options, Context>({
   },
 });
 
-/**
- * mount an element that produces async side effects after mounting.
- * mounting will await on an asapPromise by default.
- */
-export async function mountWithContextAsync<Props>(
-  element: React.ReactElement<any>,
-  options?: Options,
-  mounted: () => Promise<any> = asapPromise,
-) {
-  let wrapper: CustomRoot<Props, Context>;
-
-  await (act as any)(async () => {
-    wrapper = mountWithContext<Props>(element, options);
-    await mounted();
-  });
-
-  return wrapper!;
-}
-
 interface HookWrapperProps {
   args?: any[];
   hook(...args: any[]): any;
@@ -89,5 +71,5 @@ export function noopPromise() {
  * code has executed.
  */
 export function asapPromise() {
-  return new Promise((resolve) => setImmediate(resolve));
+  return new Promise<any>((resolve) => setImmediate(resolve));
 }
