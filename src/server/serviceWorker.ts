@@ -11,6 +11,7 @@
 // opt-in, read http://bit.ly/CRA-PWA
 
 /* eslint-disable */
+/* istanbul ignore file */
 
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||

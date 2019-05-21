@@ -1,21 +1,25 @@
+/* istanbul ignore file */
+
 import React from 'react';
-
 import ReactDOM from 'react-dom';
+import {I18nContext} from '@shopify/react-i18n';
 import {AppProvider, Frame} from '@shopify/polaris';
-import '@shopify/polaris/styles.scss';
-
 import {App} from './components';
 import {serviceWorker} from './server';
 import {theme} from './style';
-import {I18nProvider} from './utilities';
+import {i18nManager, patchPolarisForReact169} from './utilities';
+
+import '@shopify/polaris/styles.scss';
+
+patchPolarisForReact169();
 
 ReactDOM.render(
   <AppProvider theme={theme}>
-    <I18nProvider>
+    <I18nContext.Provider value={i18nManager}>
       <Frame>
         <App />
       </Frame>
-    </I18nProvider>
+    </I18nContext.Provider>
   </AppProvider>,
   document.getElementById('root'),
 );

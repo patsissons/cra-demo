@@ -1,9 +1,6 @@
-import * as React from 'react';
-
+import React, {useCallback} from 'react';
 import {ResourceList} from '@shopify/polaris';
-import {withI18n, WithI18nProps} from '@shopify/react-i18n';
-import {compose} from 'recompose';
-
+import {useI18n} from '@shopify/react-i18n';
 import {TodoItem} from 'models';
 import {TodoListItem} from './components';
 
@@ -13,48 +10,42 @@ export interface Props {
   update(item: TodoItem): Promise<any>;
 }
 
-type ComposedProps = Props & WithI18nProps;
+export default function TodoList({items, remove, update}: Props) {
+  const [i18n] = useI18n();
+  const renderItem = useCallback(
+    (item: TodoItem) => {
+      function toggleComplete() {
+        return update({...item, isComplete: !item.isComplete});
+      }
 
-export class TodoList extends React.PureComponent<ComposedProps> {
-  renderItem = (item: TodoItem) => {
-    const {remove, update} = this.props;
+      function updateText(text: string) {
+        return update({...item, text});
+      }
 
-    const toggleComplete = () => {
-      return update({...item, isComplete: !item.isComplete});
-    };
+      function removeItem() {
+        return remove(item);
+      }
 
-    const updateText = (text: string) => {
-      return update({...item, text});
-    };
+      return (
+        <TodoListItem
+          item={item}
+          removeItem={removeItem}
+          toggleComplete={toggleComplete}
+          updateText={updateText}
+        />
+      );
+    },
+    [remove, update],
+  );
 
-    const removeItem = () => {
-      return remove(item);
-    };
-
-    return (
-      <TodoListItem
-        removeItem={removeItem}
-        item={item}
-        toggleComplete={toggleComplete}
-        updateText={updateText}
-      />
-    );
-  };
-
-  render() {
-    const {i18n, items} = this.props;
-
-    return (
-      <ResourceList
-        resourceName={{
-          plural: i18n.translate('TodoList.resourceNames.plural'),
-          singular: i18n.translate('TodoList.resourceNames.singular'),
-        }}
-        items={items}
-        renderItem={this.renderItem}
-      />
-    );
-  }
+  return (
+    <ResourceList
+      resourceName={{
+        plural: i18n.translate('TodoList.resourceNames.plural'),
+        singular: i18n.translate('TodoList.resourceNames.singular'),
+      }}
+      items={items}
+      renderItem={renderItem}
+    />
+  );
 }
-
-export default compose<ComposedProps, Props>(withI18n())(TodoList);
