@@ -19,4 +19,4 @@ script:
   - NODE_ENV=$BUILD_ENV yarn test --coverage --coverageReporters lcov --runInBand
 
 after_success:
-  - test $UPLOAD_COVERALLS = 'yes' && test $TRAVIS_EVENT_TYPE = 'push' && test $TRAVIS_BRANCH = 'master' && yarn coveralls < coverage/lcov.info
+  - test $UPLOAD_COVERALLS = 'yes' && yarn coveralls < coverage/lcov.info
