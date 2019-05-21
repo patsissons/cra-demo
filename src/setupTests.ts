@@ -1,21 +1,18 @@
-import Enzyme from 'enzyme';
+import '@shopify/react-testing/matchers';
+import {patchPolarisForReact169} from './utilities';
 
-import Adapter from 'enzyme-adapter-react-16';
-
-Enzyme.configure({
-  adapter: new Adapter(),
-});
+patchPolarisForReact169();
 
 beforeAll(() => {
   Object.defineProperty(window, 'matchMedia', {
-    value: jest.fn().mockImplementation((query) => {
+    value(query: any) {
       return {
         matches: false,
         media: query,
         onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
+        addListener() {},
+        removeListener() {},
       };
-    }),
+    },
   });
 });

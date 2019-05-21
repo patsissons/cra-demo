@@ -1,0 +1,38 @@
+{
+  "App": {
+    "create": "Create new item",
+    "error": "Error creating new item",
+    "footer": "Built using {polarisLink}",
+    "polarisLink": "Polaris",
+    "title": "Todo List"
+  },
+  "TodoList": {
+    "resourceNames": {
+      "plural": "items",
+      "singular": "item"
+    }
+  },
+  "TodoListItem": {
+    "accessibilityLabel": "List item",
+    "error": {
+      "remove": "Error removing item",
+      "save": "Error saving item",
+      "toggle": "Error toggling item"
+    },
+    "placeholder": "Enter todo notes",
+    "save": "Save",
+    "tooltip": {
+      "cancel": "Cancel editing this todo item",
+      "complete": "Click this item to mark it incomplete",
+      "delete": "Delete this todo item",
+      "edit": "Edit this todo item",
+      "incomplete": "Click this item to mark it complete"
+    }
+  },
+  "useTodoListItem": {
+    "validation": {
+      "empty": "Text cannot be empty",
+      "error": "Text cannot be 'error'"
+    }
+  }
+}

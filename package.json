@@ -1,40 +1,49 @@
 {
   "name": "cra-demo",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.2.0",
+  "license": "MIT",
+  "description": "A best practices React demo using create-react-app, TypeScript, polaris, and some Shopify tools",
+  "author": "Pat Sissons <patricksissons@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patsissons/cra-demo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/patsissons/cra-demo/issues"
+  },
   "homepage": "https://patsissons.github.io/cra-demo",
   "dependencies": {
     "@shopify/polaris": "^3.0.0",
-    "@shopify/react-i18n": "^0.11.0",
+    "@shopify/polaris-icons": "^3.0.0",
+    "@shopify/react-form": "^0.3.0",
+    "@shopify/react-hooks": "^1.0.0",
+    "@shopify/react-i18n": "^1.0.0",
     "@types/jest": "^24.0.0",
     "@types/node": "^11.0.0",
     "@types/react": "~16.8.0",
     "@types/react-dom": "~16.8.0",
-    "@types/recompose": "^0.30.0",
     "node-sass": "^4.0.0",
-    "react": "~16.8.0",
-    "react-dom": "~16.8.0",
-    "react-scripts": "^2.0.0",
-    "recompose": "^0.30.0",
-    "typescript": "~3.1.0"
+    "react": "~16.9.0-alpha",
+    "react-dom": "~16.9.0-alpha",
+    "react-scripts": "^3.0.0",
+    "typescript": "~3.4.0"
   },
   "devDependencies": {
-    "@types/enzyme": "^3.0.0",
-    "@types/enzyme-adapter-react-16": "^1.0.0",
+    "@shopify/react-testing": "^1.0.0",
     "coveralls": "^3.0.0",
     "del-cli": "^1.0.0",
-    "enzyme": "^3.0.0",
-    "enzyme-adapter-react-16": "^1.0.0",
-    "eslint-plugin-shopify": "^26.0.0",
+    "eslint": "^5.0.0",
+    "eslint-plugin-shopify": "^28.0.0",
     "eslint-stats": "^1.0.0",
-    "husky": "^1.0.0",
+    "husky": "^2.0.0",
     "ncp": "^2.0.0",
     "prettier": "^1.0.0",
     "pretty-quick": "^1.0.0",
-    "serve": "^10.0.0"
+    "serve": "^11.0.0"
   },
   "resolutions": {
-    "typescript-eslint-parser": "22.0.0"
+    "typescript-eslint-parser": "22.0.0",
+    "typescript-estree": "18.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -48,6 +57,7 @@
     "lint": "yarn lint:ts",
     "lint:stats": "yarn lint:ts --format node_modules/eslint-stats/byError.js",
     "lint:ts": "eslint . --ext .ts --ext .tsx --max-warnings 0 --format codeframe",
+    "test:coverage": "NODE_ENV=production yarn test --coverage --coverageReporters lcov --runInBand --no-watchAll --all",
     "pretty": "prettier --write '**/*.{css,scss,js,json,md,ts,tsx,yml}'"
   },
   "eslintConfig": {
@@ -59,16 +69,28 @@
     ],
     "settings": {
       "react": {
-        "version": "16.8"
+        "version": "16.9"
       }
     },
     "rules": {
+      "eslint-comments/no-unlimited-disable": "off",
+      "import/named": "off",
       "import/no-anonymous-default-export": "off",
       "import/no-named-as-default": "off",
-      "no-empty-pattern": "off",
-      "shopify/images-no-direct-imports": "off"
+      "import/no-unused-modules": "off",
+      "no-empty-pattern": "off"
     },
-    "overrides": []
+    "overrides": [
+      {
+        "parserOptions": {
+          "project": "./tsconfig.json"
+        },
+        "files": [
+          "*.ts",
+          "*.tsx"
+        ]
+      }
+    ]
   },
   "eslintIgnore": [
     "/.cache",
