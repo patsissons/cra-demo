@@ -450,7 +450,7 @@ describe('<TodoListItem />', () => {
     expect(event.stopPropagation).toHaveBeenCalledTimes(1);
   });
 
-  it('disables edit mode when the cancel button is clicked', () => {
+  it('disables edit mode when the cancel button is clicked for an existing item', () => {
     const setIsEditing = jest.fn();
     const event = {
       preventDefault: jest.fn(),
@@ -472,6 +472,46 @@ describe('<TodoListItem />', () => {
 
     expect(setIsEditing).toHaveBeenCalledTimes(1);
     expect(setIsEditing).toHaveBeenCalledWith(false);
+    expect(event.preventDefault).toHaveBeenCalledTimes(1);
+    expect(event.stopPropagation).toHaveBeenCalledTimes(1);
+  });
+
+  it('removes a new item when the cancel button is clicked', async () => {
+    const removePromise = Promise.resolve();
+    const removeItem = jest.fn(() => removePromise);
+    const event = {
+      preventDefault: jest.fn(),
+      stopPropagation: jest.fn(),
+    };
+    const mock = mockUseTodoListItem();
+    useTodoListItemMock.mockImplementation(() => ({
+      ...mock,
+      fields: {
+        text: {
+          ...mock.fields.text,
+          defaultValue: '',
+          value: '',
+        },
+      },
+      isEditing: true,
+    }));
+    const mockProps = {
+      ...defaultMockProps,
+      item: {
+        id: '1',
+        isComplete: false,
+        text: '',
+      },
+      removeItem,
+    };
+    const wrapper = mountWithContext(<TodoListItem {...mockProps} />);
+
+    await wrapper
+      .find(Button, {primary: false, icon: 'cancel'})!
+      .trigger<any>('onClick', event);
+    await removePromise;
+
+    expect(removeItem).toHaveBeenCalledTimes(1);
     expect(event.preventDefault).toHaveBeenCalledTimes(1);
     expect(event.stopPropagation).toHaveBeenCalledTimes(1);
   });

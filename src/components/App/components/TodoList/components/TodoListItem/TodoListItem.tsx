@@ -75,13 +75,6 @@ export default function TodoListItem({
   const handleDismissToast = useCallback(() => {
     setError(null);
   }, [setError]);
-  const handleEdit = useCallback(
-    (event?: MouseEvent) => {
-      preventToggleEvent(event);
-      setIsEditing(!isEditing);
-    },
-    [setIsEditing, isEditing],
-  );
   const handleRemove = useCallback(
     (event?: MouseEvent) => {
       preventToggleEvent(event);
@@ -94,6 +87,17 @@ export default function TodoListItem({
       );
     },
     [isMounted, removeItem, setError, setRemoving],
+  );
+  const handleEdit = useCallback(
+    (event?: MouseEvent) => {
+      preventToggleEvent(event);
+      if (isEditing && !item.text) {
+        handleRemove();
+      } else {
+        setIsEditing(!isEditing);
+      }
+    },
+    [isEditing, item.text, handleRemove, setIsEditing],
   );
   const handleKeyDown = useCallback(
     ({key}: KeyboardEvent) => {
