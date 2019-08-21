@@ -1,0 +1,19 @@
+name: Deploy docs
+
+on:
+  push:
+    branches:
+      - master
+      - github-actions
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to docs
+        uses: JamesIves/github-pages-deploy-action@master
+        env:
+          BUILD_SCRIPT: yarn && yarn docs:clean && yarn build
+          BRANCH: test/docs
+          FOLDER: docs
+          ACCESS_TOKEN: ${{ secrets.TOKEN }}
