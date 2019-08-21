@@ -1,5 +1,11 @@
 import {useCallback, useDebugValue, useEffect, useState} from 'react';
-import {notEmpty, notEmptyString, useForm, useField} from '@shopify/react-form';
+import {
+  FormError,
+  notEmpty,
+  notEmptyString,
+  useForm,
+  useField,
+} from '@shopify/react-form';
 import {I18n} from '@shopify/react-i18n';
 import {TodoItem} from 'models';
 
@@ -12,13 +18,14 @@ export enum ErrorType {
 export function useTodoListItem(
   i18n: I18n,
   item: TodoItem,
-  updateText: (text: string) => Promise<any>,
+  updateText: (text: string) => Promise<unknown>,
 ) {
   const [isEditing, setIsEditing] = useState(false);
   const [removing, setRemoving] = useState(false);
   const [toggling, setToggling] = useState(false);
-  const [error, setError] = useState<ErrorType | null>(null);
-  const {dirty, fields, reset, submit, submitting} = useForm({
+  const [error, setError] = useState<ErrorType>();
+  const [formErrors, setFormErrors] = useState<FormError[]>([]);
+  const {dirty, fields, reset, submit, submitting, validate} = useForm({
     fields: {
       text: useField({
         validates: [
@@ -60,12 +67,18 @@ export function useTodoListItem(
       setIsEditing(true);
     }
   }, [item.text, isEditing]);
+  useEffect(() => {
+    if (dirty) {
+      setFormErrors(validate());
+    }
+  }, [dirty, validate]);
   useDebugValue(`Item (${status()})`);
 
   return {
     error,
     dirty,
     fields,
+    formErrors,
     isEditing,
     removing,
     reset,

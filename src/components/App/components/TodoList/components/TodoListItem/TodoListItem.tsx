@@ -3,7 +3,6 @@ import React, {
   KeyboardEvent,
   MutableRefObject,
   SetStateAction,
-  useCallback,
 } from 'react';
 import {
   Button,
@@ -18,7 +17,10 @@ import {
 import {
   CircleDotsMajorTwotone,
   CircleTickMajorTwotone,
+  DeleteMinor,
   EditMajorTwotone,
+  NotesMinor,
+  MobileCancelMajorMonotone,
 } from '@shopify/polaris-icons';
 import {useMountedRef} from '@shopify/react-hooks';
 import {useI18n} from '@shopify/react-i18n';
@@ -26,26 +28,26 @@ import {TodoItem} from 'models';
 import {ErrorType, useTodoListItem} from './hooks';
 import styles from './TodoListItem.module.scss';
 
-export interface Props {
+interface Props {
   item: TodoItem;
-  toggleComplete(): Promise<any>;
-  updateText(text: string): Promise<any>;
-  removeItem(): Promise<any>;
+  toggleComplete(): Promise<unknown>;
+  updateText(text: string): Promise<unknown>;
+  removeItem(): Promise<unknown>;
 }
 
-export default function TodoListItem({
+export function TodoListItem({
   item,
   removeItem,
   toggleComplete,
   updateText,
 }: Props) {
-  const {id, isComplete, text} = item;
   const isMounted = useMountedRef();
   const [i18n] = useI18n();
   const {
     error,
     dirty,
     fields,
+    formErrors,
     isEditing,
     removing,
     setError,
@@ -56,85 +58,7 @@ export default function TodoListItem({
     submitting,
     toggling,
   } = useTodoListItem(i18n, item, updateText);
-  // validate() is causing an infinite loop
-  // const formErrors = validate();
-  const formErrors = fields.text.error
-    ? [{field: 'text', message: fields.text.error}]
-    : [];
-  const handleClick = useCallback(() => {
-    if (!isEditing) {
-      errorableAction(
-        isMounted,
-        ErrorType.Toggle,
-        setError,
-        setToggling,
-        toggleComplete,
-      );
-    }
-  }, [isEditing, isMounted, setError, setToggling, toggleComplete]);
-  const handleDismissToast = useCallback(() => {
-    setError(null);
-  }, [setError]);
-  const handleRemove = useCallback(
-    (event?: MouseEvent) => {
-      preventToggleEvent(event);
-      errorableAction(
-        isMounted,
-        ErrorType.Remove,
-        setError,
-        setRemoving,
-        removeItem,
-      );
-    },
-    [isMounted, removeItem, setError, setRemoving],
-  );
-  const handleEdit = useCallback(
-    (event?: MouseEvent) => {
-      preventToggleEvent(event);
-      if (isEditing && !item.text) {
-        handleRemove();
-      } else {
-        setIsEditing(!isEditing);
-      }
-    },
-    [isEditing, item.text, handleRemove, setIsEditing],
-  );
-  const handleKeyDown = useCallback(
-    ({key}: KeyboardEvent) => {
-      if (isEditing) {
-        switch (key) {
-          case 'Enter':
-            if (dirty && formErrors.length === 0) {
-              submit();
-            }
-            break;
-          case 'Escape':
-            if (item.text) {
-              setIsEditing(false);
-            } else {
-              handleRemove();
-            }
-            break;
-        }
-      }
-    },
-    [
-      dirty,
-      formErrors.length,
-      handleRemove,
-      isEditing,
-      item.text,
-      setIsEditing,
-      submit,
-    ],
-  );
-  const handleSave = useCallback(
-    (event?: MouseEvent) => {
-      preventToggleEvent(event);
-      submit();
-    },
-    [submit],
-  );
+  const {id, isComplete, text} = item;
 
   return (
     <div
@@ -144,10 +68,10 @@ export default function TodoListItem({
       <ResourceList.Item
         id={id}
         accessibilityLabel={i18n.translate('TodoListItem.accessibilityLabel')}
-        onClick={handleClick}
+        onClick={toggle}
       >
         <Stack alignment="center">
-          <Icon source="notes" />
+          <Icon source={NotesMinor} />
           <Stack.Item fill>
             {isEditing ? (
               <TextField
@@ -160,7 +84,7 @@ export default function TodoListItem({
                   <Button
                     disabled={!dirty || formErrors.length > 0}
                     loading={submitting}
-                    onClick={handleSave}
+                    onClick={save}
                     primary
                   >
                     {i18n.translate('TodoListItem.save')}
@@ -181,24 +105,26 @@ export default function TodoListItem({
               `TodoListItem.tooltip.${isEditing ? 'cancel' : 'edit'}`,
             )}
           >
-            <Button
-              onClick={handleEdit}
-              primary={!isEditing}
-              icon={
-                isEditing ? (
-                  'cancel'
-                ) : (
-                  <Icon color="white" source={EditMajorTwotone} />
-                )
-              }
-            />
+            {(!isEditing || item.text) && (
+              <Button
+                onClick={edit}
+                primary={!isEditing}
+                icon={
+                  isEditing ? (
+                    MobileCancelMajorMonotone
+                  ) : (
+                    <Icon color="white" source={EditMajorTwotone} />
+                  )
+                }
+              />
+            )}
           </Tooltip>
           <Tooltip content={i18n.translate('TodoListItem.tooltip.delete')}>
             <Button
               loading={removing}
-              onClick={handleRemove}
+              onClick={remove}
               destructive
-              icon="delete"
+              icon={DeleteMinor}
             />
           </Tooltip>
           {toggling ? (
@@ -222,21 +148,77 @@ export default function TodoListItem({
         {error && (
           <Toast
             content={i18n.translate(`TodoListItem.error.${error}`)}
-            onDismiss={handleDismissToast}
+            onDismiss={dismissToast}
             error
           />
         )}
       </ResourceList.Item>
     </div>
   );
+
+  function dismissToast() {
+    setError(undefined);
+  }
+
+  function edit(event?: MouseEvent) {
+    preventToggleEvent(event);
+    setIsEditing(!isEditing);
+  }
+
+  function handleKeyDown({key}: KeyboardEvent) {
+    if (isEditing) {
+      switch (key) {
+        case 'Enter':
+          if (dirty && formErrors.length === 0) {
+            submit();
+          }
+          break;
+        case 'Escape':
+          if (item.text) {
+            setIsEditing(false);
+          } else {
+            remove();
+          }
+          break;
+      }
+    }
+  }
+
+  function remove(event?: MouseEvent) {
+    preventToggleEvent(event);
+    errorableAction(
+      isMounted,
+      ErrorType.Remove,
+      setError,
+      setRemoving,
+      removeItem,
+    );
+  }
+
+  function save(event?: MouseEvent) {
+    preventToggleEvent(event);
+    submit();
+  }
+
+  function toggle() {
+    if (!isEditing) {
+      errorableAction(
+        isMounted,
+        ErrorType.Toggle,
+        setError,
+        setToggling,
+        toggleComplete,
+      );
+    }
+  }
 }
 
 export async function errorableAction(
   isMounted: MutableRefObject<boolean>,
   errorType: ErrorType,
-  setError: Dispatch<SetStateAction<ErrorType | null>>,
+  setError: Dispatch<SetStateAction<ErrorType | undefined>>,
   setInvoking: Dispatch<SetStateAction<boolean>>,
-  action: () => Promise<any>,
+  action: () => Promise<unknown>,
 ) {
   try {
     setInvoking(true);

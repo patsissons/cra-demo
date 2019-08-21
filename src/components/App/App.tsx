@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useState} from 'react';
 import {
   Card,
   FooterHelp,
@@ -15,8 +15,15 @@ import {TodoList} from './components';
 import {useTodoListService} from './hooks';
 import {fallbackTranslations} from './translations';
 
-export default function App() {
-  const [i18n, ShareTranslations] = useI18n({
+const options =
+  // istanbul ignore next
+  isDevelopment || isProduction
+    ? // istanbul ignore next
+      {params: {simulatedLatency: 1000}}
+    : undefined;
+
+export function App() {
+  const [i18n, AppTranslations] = useI18n({
     id: 'App_<hash>',
     fallback: fallbackTranslations,
     async translations(locale) {
@@ -28,18 +35,7 @@ export default function App() {
   });
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState(false);
-  const options = useMemo(
-    () =>
-      /* istanbul ignore next */
-      isDevelopment || isProduction
-        ? {params: {simulatedLatency: 1000}}
-        : undefined,
-    [],
-  );
   const {items, loading, create, remove, update} = useTodoListService(options);
-  const handleDismissToast = useCallback(() => {
-    setError(false);
-  }, [setError]);
 
   if (loading) {
     return (
@@ -53,23 +49,13 @@ export default function App() {
   }
 
   return (
-    <ShareTranslations>
+    <AppTranslations>
       <Page
         title={i18n.translate('App.title')}
         primaryAction={{
           content: i18n.translate('App.create'),
           loading: creating,
-          async onAction() {
-            setCreating(true);
-
-            try {
-              await create();
-            } catch {
-              setError(true);
-            }
-
-            setCreating(false);
-          },
+          onAction: createItem,
         }}
       >
         <Card>
@@ -88,10 +74,26 @@ export default function App() {
       {error && (
         <Toast
           content={i18n.translate(`App.error`)}
-          onDismiss={handleDismissToast}
+          onDismiss={dismissToast}
           error
         />
       )}
-    </ShareTranslations>
+    </AppTranslations>
   );
+
+  async function createItem() {
+    setCreating(true);
+
+    try {
+      await create();
+    } catch {
+      setError(true);
+    }
+
+    setCreating(false);
+  }
+
+  function dismissToast() {
+    setError(false);
+  }
 }

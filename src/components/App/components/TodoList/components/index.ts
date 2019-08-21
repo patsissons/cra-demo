@@ -1,1 +1,1 @@
-export {default as TodoListItem} from './TodoListItem';
+export {TodoListItem} from './TodoListItem';

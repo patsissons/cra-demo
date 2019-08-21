@@ -1,40 +1,39 @@
 /* istanbul ignore file */
 
 import React from 'react';
-import {AppProvider, Frame} from '@shopify/polaris';
-import {I18n, I18nContext, TranslationDictionary} from '@shopify/react-i18n';
+import {I18n, I18nManager, TranslationDictionary} from '@shopify/react-i18n';
 import {I18nParentContext} from '@shopify/react-i18n/dist/context';
 import {createMount} from '@shopify/react-testing';
-import {i18nManager} from 'utilities';
 // eslint-disable-next-line shopify/strict-component-boundaries
 import {fallbackTranslations} from 'components/App/translations';
+// eslint-disable-next-line shopify/strict-component-boundaries
+import {AppContainer} from 'components/AppContainer/AppContainer';
 
 interface Context {
   i18n: I18n;
 }
 
 interface Options {
+  locale?: string;
   translations?: TranslationDictionary[];
 }
 
 export const mountWithContext = createMount<Options, Context>({
-  context({translations = []}) {
+  context({locale = 'en', translations = []}) {
     return {
       i18n: new I18n(
         [fallbackTranslations, ...translations],
-        i18nManager.details,
+        new I18nManager({locale}).details,
       ),
     };
   },
   render(node, {i18n}) {
     return (
-      <AppProvider>
-        <I18nContext.Provider value={i18nManager}>
-          <I18nParentContext.Provider value={i18n}>
-            <Frame>{node}</Frame>
-          </I18nParentContext.Provider>
-        </I18nContext.Provider>
-      </AppProvider>
+      <AppContainer>
+        <I18nParentContext.Provider value={i18n}>
+          {node}
+        </I18nParentContext.Provider>
+      </AppContainer>
     );
   },
 });
@@ -71,5 +70,5 @@ export function noopPromise() {
  * code has executed.
  */
 export function asapPromise() {
-  return new Promise<any>((resolve) => setImmediate(resolve));
+  return new Promise<unknown>((resolve) => setImmediate(resolve));
 }
