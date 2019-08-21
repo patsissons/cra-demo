@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ComponentPropsWithoutRef} from 'react';
 import {
   Button,
   Icon,
@@ -10,14 +10,19 @@ import {
 import {
   CircleDotsMajorTwotone,
   CircleTickMajorTwotone,
+  DeleteMinor,
   EditMajorTwotone,
+  MobileCancelMajorMonotone,
 } from '@shopify/polaris-icons';
 import {mountWithContext, noopPromise} from 'tests/utilities';
-import {ErrorType} from '../hooks/useTodoListItem/useTodoListItem';
-import TodoListItem, {
+import {
+  ErrorType,
+  useTodoListItem,
+} from '../hooks/useTodoListItem/useTodoListItem';
+import {
   errorableAction,
   preventToggleEvent,
-  Props,
+  TodoListItem,
 } from '../TodoListItem';
 
 jest.mock('../hooks/useTodoListItem/useTodoListItem', () => ({
@@ -29,9 +34,9 @@ const useTodoListItemMock: jest.Mock = require.requireMock(
   '../hooks/useTodoListItem/useTodoListItem',
 ).useTodoListItem;
 
-function mockUseTodoListItem() {
+function mockUseTodoListItem(): ReturnType<typeof useTodoListItem> {
   return {
-    error: null,
+    error: undefined,
     dirty: false,
     fields: {
       text: {
@@ -50,6 +55,7 @@ function mockUseTodoListItem() {
         value: 'testing',
       },
     },
+    formErrors: [],
     isEditing: false,
     removing: false,
     reset() {},
@@ -64,7 +70,7 @@ function mockUseTodoListItem() {
 }
 
 describe('<TodoListItem />', () => {
-  const defaultMockProps: Props = {
+  const defaultMockProps: ComponentPropsWithoutRef<typeof TodoListItem> = {
     item: {
       id: '1',
       isComplete: false,
@@ -140,7 +146,7 @@ describe('<TodoListItem />', () => {
     useTodoListItemMock.mockImplementation(() => ({
       ...hook,
       dirty: true,
-      fields: {text: {...hook.fields.text, error: 'error'}},
+      formErrors: [{message: 'error'}],
       isEditing: true,
       submit,
     }));
@@ -349,12 +355,7 @@ describe('<TodoListItem />', () => {
     useTodoListItemMock.mockImplementation(() => ({
       ...hook,
       dirty: true,
-      fields: {
-        text: {
-          ...hook.fields.text,
-          error: 'error',
-        },
-      },
+      formErrors: [{message: 'error'}],
       isEditing: true,
     }));
     const mockProps = {
@@ -422,7 +423,7 @@ describe('<TodoListItem />', () => {
 
     expect(wrapper).toContainReactComponent(Button, {
       primary: false,
-      icon: 'cancel',
+      icon: MobileCancelMajorMonotone,
     });
   });
 
@@ -467,51 +468,11 @@ describe('<TodoListItem />', () => {
     const wrapper = mountWithContext(<TodoListItem {...mockProps} />);
 
     wrapper
-      .find(Button, {primary: false, icon: 'cancel'})!
+      .find(Button, {primary: false, icon: MobileCancelMajorMonotone})!
       .trigger<any>('onClick', event);
 
     expect(setIsEditing).toHaveBeenCalledTimes(1);
     expect(setIsEditing).toHaveBeenCalledWith(false);
-    expect(event.preventDefault).toHaveBeenCalledTimes(1);
-    expect(event.stopPropagation).toHaveBeenCalledTimes(1);
-  });
-
-  it('removes a new item when the cancel button is clicked', async () => {
-    const removePromise = Promise.resolve();
-    const removeItem = jest.fn(() => removePromise);
-    const event = {
-      preventDefault: jest.fn(),
-      stopPropagation: jest.fn(),
-    };
-    const mock = mockUseTodoListItem();
-    useTodoListItemMock.mockImplementation(() => ({
-      ...mock,
-      fields: {
-        text: {
-          ...mock.fields.text,
-          defaultValue: '',
-          value: '',
-        },
-      },
-      isEditing: true,
-    }));
-    const mockProps = {
-      ...defaultMockProps,
-      item: {
-        id: '1',
-        isComplete: false,
-        text: '',
-      },
-      removeItem,
-    };
-    const wrapper = mountWithContext(<TodoListItem {...mockProps} />);
-
-    await wrapper
-      .find(Button, {primary: false, icon: 'cancel'})!
-      .trigger<any>('onClick', event);
-    await removePromise;
-
-    expect(removeItem).toHaveBeenCalledTimes(1);
     expect(event.preventDefault).toHaveBeenCalledTimes(1);
     expect(event.stopPropagation).toHaveBeenCalledTimes(1);
   });
@@ -525,7 +486,7 @@ describe('<TodoListItem />', () => {
     expect(wrapper).toContainReactComponent(Button, {
       loading: false,
       destructive: true,
-      icon: 'delete',
+      icon: DeleteMinor,
     });
   });
 
@@ -548,7 +509,7 @@ describe('<TodoListItem />', () => {
     const wrapper = mountWithContext(<TodoListItem {...mockProps} />);
 
     await wrapper
-      .find(Button, {destructive: true, icon: 'delete'})!
+      .find(Button, {destructive: true, icon: DeleteMinor})!
       .trigger<any>('onClick', event);
     await removePromise;
 
@@ -574,7 +535,7 @@ describe('<TodoListItem />', () => {
     const wrapper = mountWithContext(<TodoListItem {...mockProps} />);
 
     await wrapper
-      .find(Button, {destructive: true, icon: 'delete'})!
+      .find(Button, {destructive: true, icon: DeleteMinor})!
       .trigger<any>('onClick');
 
     expect(setError).toHaveBeenCalledTimes(1);
@@ -660,7 +621,7 @@ describe('<TodoListItem />', () => {
     wrapper.find(Toast)!.trigger('onDismiss');
 
     expect(setError).toHaveBeenCalledTimes(1);
-    expect(setError).toHaveBeenCalledWith(null);
+    expect(setError).toHaveBeenCalledWith(undefined);
   });
 });
 

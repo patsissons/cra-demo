@@ -12,7 +12,7 @@ import {ErrorType, useTodoListItem} from '../useTodoListItem';
 describe('useTodoListItem()', () => {
   interface Props {
     item: TodoItem;
-    updateText(text: string): Promise<any>;
+    updateText(text: string): Promise<unknown>;
   }
 
   function TestWrapper({item, updateText}: Props) {
@@ -61,14 +61,14 @@ describe('useTodoListItem()', () => {
     });
   });
 
-  it('defaults error to null', () => {
+  it('defaults error to undefined', () => {
     const mockProps = {
       ...defaultMockProps,
     };
     const wrapper = mountWithContext(<TestWrapper {...mockProps} />);
 
     expect(wrapper).toContainReactComponent(HookPropsContainer, {
-      error: null,
+      error: undefined,
     });
   });
 

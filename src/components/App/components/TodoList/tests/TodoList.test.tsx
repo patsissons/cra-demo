@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {ComponentPropsWithoutRef} from 'react';
 import {ResourceList} from '@shopify/polaris';
 import {mountWithContext, noopPromise} from 'tests/utilities';
 import {TodoListItem} from '../components';
-import TodoList, {Props} from '../TodoList';
+import {TodoList} from '../TodoList';
 
 describe('<TodoList />', () => {
-  const defaultMockProps: Props = {
+  const defaultMockProps: ComponentPropsWithoutRef<typeof TodoList> = {
     items: [],
     remove: noopPromise,
     update: noopPromise,

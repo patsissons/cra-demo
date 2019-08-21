@@ -9,7 +9,7 @@ import {
   Toast,
 } from '@shopify/polaris';
 import {mountWithContext, noopPromise} from 'tests/utilities';
-import App from '../App';
+import {App} from '../App';
 import {TodoList} from '../components';
 
 jest.mock('../hooks/useTodoListService/useTodoListService', () => ({
