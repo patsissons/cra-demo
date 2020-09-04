@@ -18,7 +18,7 @@
     "@shopify/react-form": "^0.3.0",
     "@shopify/react-hooks": "^1.0.0",
     "@shopify/react-i18n": "^1.0.0",
-    "node-sass": "^4.0.0",
+    "node-sass": "^4.13.1",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-scripts": "^3.0.0",
